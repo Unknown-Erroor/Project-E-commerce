@@ -1,6 +1,5 @@
 const items = document.getElementById('cart__items');
 let data = localStorage.getItem("panier"); 
-console.log(data);
 const button = document.querySelector("#addToCart");
 if (data == null) {
   const emptyBasket = document.getElementById("cartAndFormContainer")
@@ -8,29 +7,26 @@ if (data == null) {
 }
 else {
   data = JSON.parse(data);
-  console.log(data);
 }
 fetch("http://localhost:3000/api/products") //Recuperer les produits de l'Api
     .then(response => response.json())      //Donne le resultat en JSON
     .then(result =>{
-        console.table(result);
-        result.forEach(element => {
-            const found = data.find(element => element.id == data.id);
-            console.log(found);
-            items.innerHTML += `<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
+        data.forEach(element => {
+            const found = result.find(dataFind => dataFind._id == element.id);
+            items.innerHTML += `<article class="cart__item" data-id="${found._id}" data-color="${found.colors}">
             <div class="cart__item__img">
-              <img src="../images/product01.jpg" alt="Photographie d'un canapé">
+              <img src="${found.imageUrl}" alt="${found.altTxt}">
             </div>
             <div class="cart__item__content">
               <div class="cart__item__content__description">
-                <h2>Nom du produit</h2>
-                <p>Vert</p>
-                <p>42,00 €</p>
+                <h2>${found.name}</h2>
+                <p>${element.couleur}</p>
+                <p>${found.price}€</p>
               </div>
               <div class="cart__item__content__settings">
                 <div class="cart__item__content__settings__quantity">
                   <p>Qté : </p>
-                  <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+                  <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${element.quantity}">
                 </div>
                 <div class="cart__item__content__settings__delete">
                   <p class="deleteItem">Supprimer</p>
@@ -39,29 +35,13 @@ fetch("http://localhost:3000/api/products") //Recuperer les produits de l'Api
             </div>
           </article>`;
         });
-        /*      
-            items.innerHTML += `<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-                <div class="cart__item__img">
-                  <img src="../images/product01.jpg" alt="Photographie d'un canapé">
-                </div>
-                <div class="cart__item__content">
-                  <div class="cart__item__content__description">
-                    <h2>Nom du produit</h2>
-                    <p>Vert</p>
-                    <p>42,00 €</p>
-                  </div>
-                  <div class="cart__item__content__settings">
-                    <div class="cart__item__content__settings__quantity">
-                      <p>Qté : </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-                    </div>
-                    <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem">Supprimer</p>
-                    </div>
-                  </div>
-                </div>
-              </article>`;
-        } */
+        const deleteBtn = document.querySelectorAll('.deleteItem');
+        deleteBtn.forEach((btn, i) => {
+          btn.addEventListener("click", () => {
+            console.log(btn);
+            console.log(i);
+          })
+        })
     })
     .catch((error) => console.log("error : " + error));
 
