@@ -38,10 +38,55 @@ fetch("http://localhost:3000/api/products") //Recuperer les produits de l'Api
         const deleteBtn = document.querySelectorAll('.deleteItem');
         deleteBtn.forEach((btn, i) => {
           btn.addEventListener("click", () => {
-            console.log(btn);
-            console.log(i);
+            data.splice(i, 1);
+            localStorage.setItem("panier", JSON.stringify(data))
+            return location.reload();
           })
         })
+        const itemQuantity = document.querySelectorAll('.itemQuantity');
+        itemQuantity.forEach((btn, i) => {
+          btn.addEventListener("change", () => {
+            if (btn.value > 100) {
+              alert("le produit ne peut pas etre superieur a 100")
+            }
+            else if (btn.value <= 0) {
+              data.splice(i, 1);
+              console.log(data)
+              localStorage.setItem("panier", JSON.stringify(data))
+              return location.reload();
+            }
+            else {
+            console.log(btn.value)
+            console.log(data[i].quantity)
+            data[i].quantity = btn.value; 
+            localStorage.setItem("panier", JSON.stringify(data))
+            return location.reload(); 
+          }
+          })
+        })
+        let totalArticle = 0;
+        data.forEach((data) => {
+        totalArticle += parseInt(data.quantity);
+        document.getElementById("totalQuantity").textContent = totalArticle;
+        })
+        let total = 0;
+        data.forEach(element => {
+          const found = result.find(dataFind => dataFind._id == element.id);
+          totalPrix = element.quantity * found.price;
+          total += totalPrix;
+          
+        }) 
+        document.getElementById("totalPrice").textContent = total;
+
+
+
+
+        let regValidEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
+        let regexString = /^([A-Za-z]+),\s+([A-Za-z]+)\s+([A-Za-z]+)?$/gm;
+        let regexAdresse = /^([0-9]*) ?([a-zA-Z,\. ]*) ?([0-9]{5}) ?([a-zA-Z]*)/g;
+        
+
+          
+
     })
     .catch((error) => console.log("error : " + error));
-
