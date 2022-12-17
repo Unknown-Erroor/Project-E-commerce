@@ -1,12 +1,12 @@
-const params = new URLSearchParams(document.location.search);
-const productId = params.get("id");
+const params = new URLSearchParams(document.location.search); // variable params récupère l'url de la page
+const productId = params.get("id"); //  productId récupére la valeur du paramètre id
 console.log(productId);
 const picture = document.querySelector(".item__img");
 const name = document.getElementById("title");
 const description = document.getElementById("description");
 const colors = document.getElementById("colors");
 const price = document.getElementById("price");
-fetch(`http://localhost:3000/api/products/${productId}`)
+fetch(`http://localhost:3000/api/products/${productId}`) // Recuperation des produits puis affichage dans l'HTML.
   .then(response => response.json())
   .then(result => {
     picture.innerHTML = `<img src="${result.imageUrl}" alt="${result.altTxt}">`;
@@ -22,29 +22,29 @@ fetch(`http://localhost:3000/api/products/${productId}`)
   })
   .catch((error) => console.log("error : " + error));
 
-let data = localStorage.getItem("panier"); 
+let data = localStorage.getItem("panier");  // localStorage
 console.log(data);
 const button = document.querySelector("#addToCart");
-if (data == null) {
-  data = [];
+if (data == null) {           // si localStorage est nul 
+  data = [];                  // creation d'un tableau vide
 }
-else {
-  data = JSON.parse(data);
+else {                        // si localStorage n'est pas nul
+  data = JSON.parse(data);    // convertit string en JSON
   console.log(data);
 }
-button.addEventListener("click", () => {
+button.addEventListener("click", () => {    // ecoute ce qu'il se passe au click sur "quantity"
       const quantity = document.querySelector("#quantity");
-      let product = {
+      let product = {                       // creation tableau product
         id: productId,
         couleur: colors.value,
         quantity: quantity.value
       }
       console.log(product);
-      if (colors.value == null || colors.value === "" || quantity.value == null || quantity.value <= 0 || quantity.value > 100) {
+      if (colors.value == null || colors.value === "" || quantity.value == null || quantity.value <= 0 || quantity.value > 100) {    // conditions pour pouvoir ajouter un produit dans le panier 
         alert("Veuillez renseigner une couleur et une quantité maximum 100.");
       }
       else {
-        const found = data.find(element => element.id == product.id && element.couleur == product.couleur);
+        const found = data.find(element => element.id == product.id && element.couleur == product.couleur); 
         console.log(found);
         if(found != undefined){
           let newQuantity = parseInt(product.quantity) + parseInt(found.quantity);
@@ -60,11 +60,6 @@ button.addEventListener("click", () => {
           data.push(product);
           localStorage.setItem("panier", JSON.stringify(data))
         }
-
       }
-
-      
-
-      
     });
   
