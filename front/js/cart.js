@@ -7,10 +7,52 @@ if (data == null) {
 } else {
     data = JSON.parse(data);
 }
-fetch("http://localhost:3000/api/products")
-    .then(response => response.json())
+
+function updatePanier() {
+    localStorage.setItem("panier", JSON.stringify(data));
+}
+
+function reload() {
+    return location.reload();
+}
+
+function deleteArticle() {
+    const deleteBtn = document.querySelectorAll('.deleteItem');
+    deleteBtn.forEach((btn, i) => {
+        btn.addEventListener("click", () => {
+            data.splice(i, 1);
+            updatePanier();
+            reload();
+        })
+    })
+}
+
+function changeQuantity() {
+    const itemQuantity = document.querySelectorAll('.itemQuantity');
+    itemQuantity.forEach((btn, i) => {
+        btn.addEventListener("change", () => {
+            if (btn.value > 100) {
+                alert("le produit ne peut pas etre superieur a 100")
+            } else if (btn.value <= 0) {
+                data.splice(i, 1);
+                console.log(data)
+                updatePanier();
+                reload();
+            } else {
+                console.log(btn.value)
+                console.log(data[i].quantity)
+                data[i].quantity = btn.value;
+                updatePanier();
+                reload();
+            }
+        })
+    })
+}
+
+fetch("http://localhost:3000/api/products") //Recuperer les produits de l'Api
+    .then(response => response.json()) //Donne le resultat en JSON
     .then(result => {
-        data.forEach(element => {
+        data.forEach(element => { // parcourt le resultat et les affiche dynamiquement dans l'HTML
             const found = result.find(dataFind => dataFind._id == element.id);
             items.innerHTML += `<article class="cart__item" data-id="${found._id}" data-color="${found.colors}">
             <div class="cart__item__img">
@@ -34,47 +76,22 @@ fetch("http://localhost:3000/api/products")
             </div>
           </article>`;
         });
-        const deleteBtn = document.querySelectorAll('.deleteItem');  
-        deleteBtn.forEach((btn, i) => {
-            btn.addEventListener("click", () => {
-                data.splice(i, 1);
-                localStorage.setItem("panier", JSON.stringify(data))
-                return location.reload();
-            })
-        })
-        const itemQuantity = document.querySelectorAll('.itemQuantity');
-        itemQuantity.forEach((btn, i) => {
-            btn.addEventListener("change", () => {
-                if (btn.value > 100) {
-                    alert("le produit ne peut pas etre superieur a 100")
-                } else if (btn.value <= 0) {
-                    data.splice(i, 1);
-                    console.log(data)
-                    localStorage.setItem("panier", JSON.stringify(data))
-                    return location.reload();
-                } else {
-                    console.log(btn.value)
-                    console.log(data[i].quantity)
-                    data[i].quantity = btn.value;
-                    localStorage.setItem("panier", JSON.stringify(data))
-                    return location.reload();
-                }
-            })
-        })
+        deleteArticle();
+        changeQuantity();
         let totalArticle = 0;
-        data.forEach((data) => {
+        data.forEach((data) => { // total de tous les articles
             totalArticle += parseInt(data.quantity);
             document.getElementById("totalQuantity").textContent = totalArticle;
         })
         let total = 0;
-        data.forEach(element => {
+        data.forEach(element => { // prix total de tous les articles
             const found = result.find(dataFind => dataFind._id == element.id);
             totalPrix = element.quantity * found.price;
             total += totalPrix;
         })
         document.getElementById("totalPrice").textContent = total;
     })
-    .catch((error) => console.log("error : " + error));
+    .catch((error) => console.log("error : " + error)); // dans le cas d'une erreur, renvoit dans la console error + l'erreur.
 
 let regValidEmail = /[a-zA-Z0-9.-_]+@{1}[a-zA-Z0-9.-_]+\.{1}[a-z]{1,10}/;
 let regexString = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/;
@@ -131,8 +148,8 @@ email.addEventListener('keyup', (regexTest) => {
 })
 
 const envoyer = document.querySelector('.cart__order__form');
-envoyer.addEventListener('submit', (e) => {
-    e.preventDefault()
+envoyer.addEventListener('submit', (e) => { // ecoute sur le bouton "Commander"
+    e.preventDefault() // 
     if (data.length === 0) {
         alert("Vous n'avez pas de produit dans votre panier")
     } else if (data.length >= 1) {
@@ -152,7 +169,6 @@ envoyer.addEventListener('submit', (e) => {
             emailErrorMsg.innerHTML = "Veuillez renseigner votre email"
         }
         if (firstNameState && lastNameState && addressState && cityState && emailState === true) {
-            /*ajouter && lastNameState && adresseState && cityState && emailState*/
             let contact = {
                 /* values de chaque input */
                 firstName: firstName.value,
@@ -187,7 +203,7 @@ envoyer.addEventListener('submit', (e) => {
                     window.location.href = confirmationPage;
                     localStorage.clear();
                 })
-                .catch((error) => console.log("error : " + error));
+                .catch((error) => console.log("error : " + error)); // dans le cas d'une erreur, renvoit dans la console error + l'erreur.
         }
     }
 })

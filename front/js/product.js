@@ -31,6 +31,11 @@ if (data == null) { // si localStorage est nul
     data = JSON.parse(data); // convertit string en JSON
     console.log(data);
 }
+
+function setPanier() { // ajoute une clé et une valeur dans le localStorage
+    localStorage.setItem("panier", JSON.stringify(data));
+}
+
 button.addEventListener("click", () => { // ecoute ce qu'il se passe au click sur "quantity"
     const quantity = document.querySelector("#quantity");
     let product = { // creation tableau product
@@ -50,13 +55,13 @@ button.addEventListener("click", () => { // ecoute ce qu'il se passe au click su
                 alert("le produit ne peut pas etre superieur a 100");
             } else {
                 found.quantity = newQuantity;
-                localStorage.setItem("panier", JSON.stringify(data))
+                setPanier();
             }
         } else {
             console.log(product)
             console.log(data)
             data.push(product);
-            localStorage.setItem("panier", JSON.stringify(data))
+            setPanier();
         }
     }
 });
