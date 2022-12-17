@@ -1,8 +1,8 @@
 const items = document.getElementById('items'); //pointe l'id 'items' dans l'HTML
 fetch("http://localhost:3000/api/products") //Recuperer les produits de l'Api
     .then(response => response.json())      //Donne le resultat en JSON
-    .then(result =>{  
-        for(let product of result){         // parcourt le resultat et les affiche dynamiquement dans l'HTML      
+    .then(result => {  
+        for (let product of result) {         // parcourt le resultat et les affiche dynamiquement dans l'HTML      
             items.innerHTML += `<a href="./product.html?id=${product._id}">
             <article>
               <img src="${product.imageUrl}" alt="${product.altTxt}">
