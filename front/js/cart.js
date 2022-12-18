@@ -104,7 +104,6 @@ firstName.addEventListener('keyup', (regexTest) => { // ecoute ce qu'il se passe
     regexTest = regexString.test(firstName.value)
     firstNameErrorMsg.innerHTML = regexTest ? "" : "Veuillez renseigner votre prenom valid"
     firstNameState = regexTest ? true : false
-    console.log(regexTest)
 })
 
 const lastName = document.getElementById('lastName')
@@ -114,7 +113,6 @@ lastName.addEventListener('keyup', (regexTest) => { // ecoute ce qu'il se passe 
     regexTest = regexString.test(lastName.value)
     lastNameErrorMsg.innerHTML = regexTest ? "" : "Veuillez renseigner votre nom valid"
     lastNameState = regexTest ? true : false
-    console.log(regexTest)
 })
 
 const address = document.getElementById('address')
@@ -124,7 +122,6 @@ address.addEventListener('keyup', (regexTest) => { // ecoute ce qu'il se passe d
     regexTest = regexAdresse.test(address.value)
     addressErrorMsg.innerHTML = regexTest ? "" : "Veuillez renseigner votre adresse valid"
     addressState = regexTest ? true : false
-    console.log(regexTest)
 })
 
 const city = document.getElementById('city')
@@ -134,7 +131,6 @@ city.addEventListener('keyup', (regexTest) => { // ecoute ce qu'il se passe dans
     regexTest = regexString.test(city.value)
     cityErrorMsg.innerHTML = regexTest ? "" : "Veuillez renseigner votre ville valid"
     cityState = regexTest ? true : false
-    console.log(regexTest)
 })
 
 const email = document.getElementById('email')
@@ -144,12 +140,11 @@ email.addEventListener('keyup', (regexTest) => { // ecoute ce qu'il se passe dan
     regexTest = regValidEmail.test(email.value)
     emailErrorMsg.innerHTML = regexTest ? "" : "Veuillez renseigner votre Email valid"
     emailState = regexTest ? true : false
-    console.log(regexTest)
 })
 
 const envoyer = document.querySelector('.cart__order__form');
 envoyer.addEventListener('submit', (e) => { // ecoute sur le bouton "Commander"
-    e.preventDefault() // 
+    e.preventDefault(); // empeche le comportement par defaut du submit
     if (data.length === 0) {
         alert("Vous n'avez pas de produit dans votre panier")
     } else if (data.length >= 1) {
@@ -199,6 +194,7 @@ envoyer.addEventListener('submit', (e) => { // ecoute sur le bouton "Commander"
                 })
                 .then((res) => res.json())
                 .then((response) => {
+                    // envoyé a la page confirmation
                     let confirmationPage = "./confirmation.html?id=" + response.orderId;
                     window.location.href = confirmationPage;
                     localStorage.clear();
