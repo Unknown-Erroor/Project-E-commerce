@@ -32,7 +32,7 @@ if (data == null) { // si localStorage est nul
     console.log(data);
 }
 
-function setPanier() { // ajoute une clé et une valeur dans le localStorage
+function setPanier() { // met a jour le panier
     localStorage.setItem("panier", JSON.stringify(data));
 }
 

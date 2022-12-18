@@ -8,15 +8,15 @@ if (data == null) {
     data = JSON.parse(data);
 }
 
-function updatePanier() {
+function updatePanier() { // met a jour le panier
     localStorage.setItem("panier", JSON.stringify(data));
 }
 
-function reload() {
+function reload() { // refraichit la page
     return location.reload();
 }
 
-function deleteArticle() {
+function deleteArticle() { // supprimer un article 
     const deleteBtn = document.querySelectorAll('.deleteItem');
     deleteBtn.forEach((btn, i) => {
         btn.addEventListener("click", () => {
@@ -27,7 +27,7 @@ function deleteArticle() {
     })
 }
 
-function changeQuantity() {
+function changeQuantity() { // changer la quantité d'un article
     const itemQuantity = document.querySelectorAll('.itemQuantity');
     itemQuantity.forEach((btn, i) => {
         btn.addEventListener("change", () => {
@@ -100,7 +100,7 @@ let regexAdresse = /((^[0-9]*).?((BIS)|(TER)|(QUATER))?)?((\W+)|(^))(([a-z]+.)*)
 const firstName = document.getElementById('firstName')
 const firstNameErrorMsg = document.getElementById('firstNameErrorMsg')
 let firstNameState = false;
-firstName.addEventListener('keyup', (regexTest) => {
+firstName.addEventListener('keyup', (regexTest) => { // ecoute ce qu'il se passe dans firstName et test le regexString avec la valeur de firstName
     regexTest = regexString.test(firstName.value)
     firstNameErrorMsg.innerHTML = regexTest ? "" : "Veuillez renseigner votre prenom valid"
     firstNameState = regexTest ? true : false
@@ -110,7 +110,7 @@ firstName.addEventListener('keyup', (regexTest) => {
 const lastName = document.getElementById('lastName')
 const lastNameErrorMsg = document.getElementById('lastNameErrorMsg')
 let lastNameState = false;
-lastName.addEventListener('keyup', (regexTest) => {
+lastName.addEventListener('keyup', (regexTest) => { // ecoute ce qu'il se passe dans lastName et test le regexString avec la valeur de lastName
     regexTest = regexString.test(lastName.value)
     lastNameErrorMsg.innerHTML = regexTest ? "" : "Veuillez renseigner votre nom valid"
     lastNameState = regexTest ? true : false
@@ -120,7 +120,7 @@ lastName.addEventListener('keyup', (regexTest) => {
 const address = document.getElementById('address')
 const addressErrorMsg = document.getElementById('addressErrorMsg')
 let addressState = false;
-address.addEventListener('keyup', (regexTest) => {
+address.addEventListener('keyup', (regexTest) => { // ecoute ce qu'il se passe dans l'adresse et test le regexAdresse avec la valeur d'address
     regexTest = regexAdresse.test(address.value)
     addressErrorMsg.innerHTML = regexTest ? "" : "Veuillez renseigner votre adresse valid"
     addressState = regexTest ? true : false
@@ -130,7 +130,7 @@ address.addEventListener('keyup', (regexTest) => {
 const city = document.getElementById('city')
 const cityErrorMsg = document.getElementById('cityErrorMsg')
 let cityState = false;
-city.addEventListener('keyup', (regexTest) => {
+city.addEventListener('keyup', (regexTest) => { // ecoute ce qu'il se passe dans city et test le regexstring avec la valeur de city
     regexTest = regexString.test(city.value)
     cityErrorMsg.innerHTML = regexTest ? "" : "Veuillez renseigner votre ville valid"
     cityState = regexTest ? true : false
@@ -140,7 +140,7 @@ city.addEventListener('keyup', (regexTest) => {
 const email = document.getElementById('email')
 const emailErrorMsg = document.getElementById('emailErrorMsg')
 let emailState = false;
-email.addEventListener('keyup', (regexTest) => {
+email.addEventListener('keyup', (regexTest) => { // ecoute ce qu'il se passe dans email et test le regValidEmail avec la valeur d'email
     regexTest = regValidEmail.test(email.value)
     emailErrorMsg.innerHTML = regexTest ? "" : "Veuillez renseigner votre Email valid"
     emailState = regexTest ? true : false
